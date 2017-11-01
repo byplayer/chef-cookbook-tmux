@@ -31,7 +31,7 @@ end
 
 tar_name = "tmux-#{node['tmux']['version']}"
 remote_file "#{Chef::Config['file_cache_path']}/#{tar_name}.tar.gz" do
-  source   "http://downloads.sourceforge.net/tmux/#{tar_name}.tar.gz"
+  source   "https://github.com/tmux/tmux/releases/download/#{node['tmux']['version']}/#{tar_name}.tar.gz"
   checksum node['tmux']['checksum']
   notifies :run, 'bash[install_tmux]', :immediately
 end
