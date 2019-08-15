@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Cookbook Name:: tmux
 # Recipe:: source
@@ -20,13 +22,19 @@
 
 packages = case node['platform_family']
            when 'rhel'
-             %w(libevent-devel ncurses-devel gcc make)
+             %w[libevent-devel ncurses-devel gcc make]
            else
-             %w(libevent-dev libncurses5-dev gcc make)
+             %w[libevent-dev libncurses5-dev gcc make]
            end
 
 packages.each do |name|
   package name
+end
+
+git "#{Chef::Config['file_cache_path']}/tmux-eaw-fix" do
+  repository node['tmux']['eaw_fix_repo']
+  enable_submodules true
+  action :sync
 end
 
 tar_name = "tmux-#{node['tmux']['version']}"
@@ -42,9 +50,10 @@ bash 'install_tmux' do
   code <<-EOH
       tar -zxf #{tar_name}.tar.gz
       cd #{tar_name}
+      patch -p1 < #{Chef::Config['file_cache_path']}/tmux-eaw-fix/tmux-#{node['tmux']['version']}-fix.diff
       ./configure #{node['tmux']['configure_options'].join(' ')}
       make
       make install
-    EOH
+  EOH
   action :nothing
 end
