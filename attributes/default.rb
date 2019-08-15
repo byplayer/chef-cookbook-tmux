@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Cookbook Name:: tmux
 # Attribute:: default
@@ -34,3 +36,4 @@ default['tmux']['session_opts']['base-index'] = 1
 default['tmux']['session_opts']['prefix'] = 'C-a'
 
 default['tmux']['window_opts']['pane-base-index'] = 1
+default['tmux']['eaw_fix_repo'] = 'https://github.com/z80oolong/tmux-eaw-fix.git'
